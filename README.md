@@ -1,2 +1,2 @@
 # Dynamixel Communication Wrapper
-A wrapper in MATLAB that simplifies communication with Dynamixel motors
+A wrapper in MATLAB that simplifies communication with Dynamixel motors. The wrapping class leverages a container created from the control table on https://emanual.robotis.com/docs/en/dxl/mx/mx-106-2/#control-table. DXLCommunication & DXLActuationPack takes in as input the data name as a string to read from or write data to that register. Data address, size and data format are handled internally. DXLCommunication is the fundamental class, with the DXLActuationPack built on top of DXLCommunication. 
