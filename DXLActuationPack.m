@@ -1,5 +1,4 @@
 classdef DXLActuationPack < DXLCommunication
-    % MyClass - A simple example class
 
     properties (Access = public)
         % Public properties
