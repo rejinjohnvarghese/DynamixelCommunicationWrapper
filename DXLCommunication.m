@@ -1,5 +1,4 @@
 classdef DXLCommunication
-    % MyClass - A simple example class
 
     properties (Access = public)
         % Public properties
