@@ -35,12 +35,17 @@
 
 import ctypes
 from ctypes import cdll
-dxl_lib = cdll.LoadLibrary("../../c/build/win32/output/dxl_x86_c.dll")  # for windows 32bit
+# dxl_lib = cdll.LoadLibrary("../../c/build/win32/output/dxl_x86_c.dll")  # for windows 32bit
 # dxl_lib = cdll.LoadLibrary("../../c/build/win64/output/dxl_x64_c.dll")  # for windows 64bit
 # dxl_lib = cdll.LoadLibrary("../../c/build/linux32/libdxl_x86_c.so")     # for linux 32bit
 # dxl_lib = cdll.LoadLibrary("../../c/build/linux64/libdxl_x64_c.so")     # for linux 64bit
 # dxl_lib = cdll.LoadLibrary("../../c/build/linux_sbc/libdxl_sbc_c.so")   # for SBC linux
-# dxl_lib = cdll.LoadLibrary("../../c/build/mac/libdxl_mac_c.dylib")      # for Mac OS
+dxl_lib = cdll.LoadLibrary("DynamixelSDK-master_modified/c/build/mac/libdxl_mac_c.dylib")      # for Mac OS
+# dxl_lib = cdll.LoadLibrary("DynamixelSDK-master_modified/c/build/maca/libdxl_maca_c.dylib")      # for Mac OS
+# dxl_lib = cdll.LoadLibrary("DynamixelSDK-master_modified/c/build/maci/libdxl_maci_c.dylib")      # for Mac OS
+
+# current_file_path = os.path.abspath(__file__)
+# print(f"File Path :{current_file_path} \n")
 
 # port_handler
 portHandler = dxl_lib.portHandler
@@ -65,10 +70,10 @@ isPacketTimeout = dxl_lib.isPacketTimeout
 # packet_handler
 packetHandler = dxl_lib.packetHandler
 
-printTxRxResult = dxl_lib.printTxRxResult
+# printTxRxResult = dxl_lib.printTxRxResult
 getTxRxResult = dxl_lib.getTxRxResult
 getTxRxResult.restype = ctypes.c_char_p
-printRxPacketError = dxl_lib.printRxPacketError
+# printRxPacketError = dxl_lib.printRxPacketError
 getRxPacketError = dxl_lib.getRxPacketError
 getRxPacketError.restype = ctypes.c_char_p
 

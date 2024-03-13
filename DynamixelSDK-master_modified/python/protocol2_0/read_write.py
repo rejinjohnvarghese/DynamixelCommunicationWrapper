@@ -61,14 +61,15 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-os.sys.path.append('../dynamixel_functions_py')             # Path setting
+os.sys.path.append('DynamixelSDK-master_modified/python/dynamixel_functions_py')             # Path setting
 
 import dynamixel_functions as dynamixel                     # Uses Dynamixel SDK library
 
 # Control table address
-ADDR_PRO_TORQUE_ENABLE       = 562                          # Control table address is different in Dynamixel model
-ADDR_PRO_GOAL_POSITION       = 596
-ADDR_PRO_PRESENT_POSITION    = 611
+ADDR_PRO_TORQUE_ENABLE       = 64                          # Control table address is different in Dynamixel model
+ADDR_PRO_GOAL_POSITION       = 116
+ADDR_PRO_PRESENT_POSITION    = 132
+ADDR_PRO_OPERATING_MODE      = 11
 
 # Protocol version
 PROTOCOL_VERSION            = 2                             # See which protocol version is used in the Dynamixel
@@ -76,13 +77,13 @@ PROTOCOL_VERSION            = 2                             # See which protocol
 # Default setting
 DXL_ID                      = 1                             # Dynamixel ID: 1
 BAUDRATE                    = 57600
-DEVICENAME                  = "/dev/ttyUSB0".encode('utf-8')# Check which port is being used on your controller
+DEVICENAME                  = '/dev/tty.usbserial-FT2H2Z5A'.encode('utf-8')# Check which port is being used on your controller
                                                             # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 
 TORQUE_ENABLE               = 1                             # Value for enabling the torque
 TORQUE_DISABLE              = 0                             # Value for disabling the torque
-DXL_MINIMUM_POSITION_VALUE  = -150000                       # Dynamixel will rotate between this value
-DXL_MAXIMUM_POSITION_VALUE  = 150000                        # and this value (note that the Dynamixel would not move when the position value is out of movable range. Check e-manual about the range of the Dynamixel you use.)
+DXL_MINIMUM_POSITION_VALUE  = 0                          # Dynamixel will rotate between this value
+DXL_MAXIMUM_POSITION_VALUE  = 4095                        # and this value (note that the Dynamixel would not move when the position value is out of movable range. Check e-manual about the range of the Dynamixel you use.)
 DXL_MOVING_STATUS_THRESHOLD = 20                            # Dynamixel moving status threshold
 
 ESC_ASCII_VALUE             = 0x1b
@@ -123,6 +124,17 @@ else:
     getch()
     quit()
 
+# Read operating mode  
+dxl_op_mode = dynamixel.read1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_PRO_OPERATING_MODE)
+dxl_comm_result = dynamixel.getLastTxRxResult(port_num, PROTOCOL_VERSION)
+dxl_error = dynamixel.getLastRxPacketError(port_num, PROTOCOL_VERSION)
+if dxl_comm_result != COMM_SUCCESS:
+    print(dynamixel.getTxRxResult(PROTOCOL_VERSION, dxl_comm_result))
+elif dxl_error != 0:
+    print(dynamixel.getRxPacketError(PROTOCOL_VERSION, dxl_error))
+
+print("[ID:%03d] Operating Mode:%03d" % (DXL_ID, dxl_op_mode))
+
 
 # Enable Dynamixel Torque
 dynamixel.write1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_PRO_TORQUE_ENABLE, TORQUE_ENABLE)
@@ -134,6 +146,17 @@ elif dxl_error != 0:
     print(dynamixel.getRxPacketError(PROTOCOL_VERSION, dxl_error))
 else:
     print("Dynamixel has been successfully connected")
+
+# Read torque  
+dxl_torque_enable = dynamixel.read1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_PRO_TORQUE_ENABLE)
+dxl_comm_result = dynamixel.getLastTxRxResult(port_num, PROTOCOL_VERSION)
+dxl_error = dynamixel.getLastRxPacketError(port_num, PROTOCOL_VERSION)
+if dxl_comm_result != COMM_SUCCESS:
+    print(dynamixel.getTxRxResult(PROTOCOL_VERSION, dxl_comm_result))
+elif dxl_error != 0:
+    print(dynamixel.getRxPacketError(PROTOCOL_VERSION, dxl_error))
+
+print("[ID:%03d] Torque Enable:%03d" % (DXL_ID, dxl_torque_enable))
 
 
 while 1:

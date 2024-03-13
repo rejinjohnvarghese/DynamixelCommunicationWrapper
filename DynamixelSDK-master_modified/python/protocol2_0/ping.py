@@ -61,8 +61,13 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-os.sys.path.append('../dynamixel_functions_py')             # Path setting
+current_file_path = os.path.abspath(__file__)
+print(f"File Path :{current_file_path} \n")
 
+cwd = os.getcwd()
+print(f"Current Working Directory :{cwd} \n")
+
+os.sys.path.append('DynamixelSDK-master_modified/python/dynamixel_functions_py')             # Path setting
 import dynamixel_functions as dynamixel                     # Uses Dynamixel SDK library
 
 # Protocol version
@@ -71,7 +76,7 @@ PROTOCOL_VERSION            = 2                             # See which protocol
 # Default setting
 DXL_ID                      = 1                             # Dynamixel ID: 1
 BAUDRATE                    = 57600
-DEVICENAME                  = "/dev/ttyUSB0".encode('utf-8')# Check which port is being used on your controller
+DEVICENAME                  = '/dev/tty.usbserial-FT2H2Z5A'.encode('utf-8')# Check which port is being used on your controller
                                                             # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 
 COMM_SUCCESS                = 0                             # Communication Success result value

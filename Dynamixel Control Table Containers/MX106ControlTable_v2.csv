@@ -1,0 +1,77 @@
+﻿DataName,DataAddress,NumBytes,DataDescription,DataAccess,InitialValue
+Model Number,0,2,Model Number,R,321
+Model Information,2,4,Model Information,R,NaN
+Firmware Version,6,1,Firmware Version,R,NaN
+ID,7,1,DYNAMIXEL ID,RW,1
+Baud Rate,8,1,Communication Baud Rate,RW,1
+Return Delay Time,9,1,Response Delay Time,RW,250
+Drive Mode,10,1,Drive Mode,RW,0
+Operating Mode,11,1,Operating Mode,RW,3
+Secondary(Shadow) ID,12,1,Secondary ID,RW,255
+Protocol Type,13,1,Protocol Type,RW,2
+Homing Offset,20,4,Home Position Offset,RW,0
+Moving Threshold,24,4,Velocity Threshold for Movement Detection,RW,10
+Temperature Limit,31,1,Maximum Internal Temperature Limit,RW,80
+Max Voltage Limit,32,2,Maximum Input Voltage Limit,RW,160
+Min Voltage Limit,34,2,Minimum Input Voltage Limit,RW,95
+PWM Limit,36,2,Maximum PWM Limit,RW,885
+Current Limit,38,2,Maximum Current Limit,RW,2047
+Acceleration Limit,40,4,Maximum Acceleration Limit,RW,32767
+Velocity Limit,44,4,Maximum Velocity Limit,RW,210
+Max Position Limit,48,4,Maximum Position Limit,RW,"4,095"
+Min Position Limit,52,4,Minimum Position Limit,RW,0
+Shutdown,63,1,Shutdown Error Information,RW,52
+Torque Enable,64,1,Motor Torque On/Off,RW,0
+LED,65,1,Status LED On/Off,RW,0
+Status Return Level,68,1,Select Types of Status Return,RW,2
+Registered Instruction,69,1,REG_WRITE Instruction Flag,R,0
+Hardware Error Status,70,1,Hardware Error Status,R,0
+Velocity I Gain,76,2,I Gain of Velocity,RW,1920
+Velocity P Gain,78,2,P Gain of Velocity,RW,100
+Position D Gain,80,2,D Gain of Position,RW,0
+Position I Gain,82,2,I Gain of Position,RW,0
+Position P Gain,84,2,P Gain of Position,RW,850
+Feedforward 2nd Gain,88,2,2nd Gain of FeedNaNForward,RW,0
+Feedforward 1st Gain,90,2,1st Gain of FeedNaNForward,RW,0
+BUS Watchdog,98,1,DYNAMIXEL BUS Watchdog,RW,0
+Goal PWM,100,2,Desired PWM Value,RW,NaN
+Goal Current,102,2,Desired Current Value,RW,NaN
+Goal Velocity,104,4,Desired Velocity Value,RW,NaN
+Profile Acceleration,108,4,Acceleration Value of Profile,RW,0
+Profile Velocity,112,4,Velocity Value of Profile,RW,0
+Goal Position,116,4,Desired Position,RW,NaN
+Realtime Tick,120,2,Count Time in Millisecond,R,NaN
+Moving,122,1,Movement Flag,R,0
+Moving Status,123,1,Detailed Information of Movement Status,R,0
+Present PWM,124,2,Present PWM Value,R,NaN
+Present Current,126,2,Present Current Value,R,NaN
+Present Velocity,128,4,Present Velocity Value,R,NaN
+Present Position,132,4,Present Position Value,R,NaN
+Velocity Trajectory,136,4,Desired Velocity Trajectory from Profile,R,NaN
+Position Trajectory,140,4,Desired Position Trajectory from Profile,R,NaN
+Present Input Voltage,144,2,Present Input Voltage,R,NaN
+Present Temperature,146,1,Present Internal Temperature,R,NaN
+Indirect Address 1,168,2,Indirect Address 1,RW,224
+Indirect Address 2,170,2,Indirect Address 2,RW,225
+Indirect Address 3,172,2,Indirect Address 3,RW,226
+Indirect Address 26,218,2,Indirect Address 26,RW,249
+Indirect Address 27,220,2,Indirect Address 27,RW,250
+Indirect Address 28,222,2,Indirect Address 28,RW,251
+Indirect Data 1,224,1,Indirect Data 1,RW,0
+Indirect Data 2,225,1,Indirect Data 2,RW,0
+Indirect Data 3,226,1,Indirect Data 3,RW,0
+Indirect Data 26,249,1,Indirect Data 26,RW,0
+Indirect Data 27,250,1,Indirect Data 27,RW,0
+Indirect Data 28,251,1,Indirect Data 28,RW,0
+Indirect Address 29,578,2,Indirect Address 29,RW,634
+Indirect Address 30,580,2,Indirect Address 30,RW,635
+Indirect Address 31,582,2,Indirect Address 31,RW,636
+Indirect Address 54,628,2,Indirect Address 54,RW,659
+Indirect Address 55,630,2,Indirect Address 55,RW,660
+Indirect Address 56,632,2,Indirect Address 56,RW,661
+Indirect Data 29,634,1,Indirect Data 29,RW,0
+Indirect Data 30,635,1,Indirect Data 30,RW,0
+Indirect Data 31,636,1,Indirect Data 31,RW,0
+Indirect Data 54,659,1,Indirect Data 54,RW,0
+Indirect Data 55,660,1,Indirect Data 55,RW,0
+Indirect Data 56,661,1,Indirect Data 56,RW,0
