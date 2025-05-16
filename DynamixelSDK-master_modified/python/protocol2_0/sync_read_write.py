@@ -61,14 +61,15 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-os.sys.path.append('../dynamixel_functions_py')             # Path setting
+os.sys.path.append('DynamixelSDK-master_modified/python/dynamixel_functions_py')             # Path setting
 
-import dynamixel_functions as dynamixel                     # Uses Dynamixel SDK library
+import dynamixel_functions as dynamixel                      # Uses Dynamixel SDK library
 
 # Control table address
-ADDR_PRO_TORQUE_ENABLE      = 562                           # Control table address is different in Dynamixel model
-ADDR_PRO_GOAL_POSITION      = 596
-ADDR_PRO_PRESENT_POSITION   = 611
+ADDR_PRO_TORQUE_ENABLE       = 64                          # Control table address is different in Dynamixel model
+ADDR_PRO_GOAL_POSITION       = 116
+ADDR_PRO_PRESENT_POSITION    = 132
+ADDR_PRO_OPERATING_MODE      = 11
 
 # Data Byte Length
 LEN_PRO_GOAL_POSITION       = 4
@@ -81,13 +82,14 @@ PROTOCOL_VERSION            = 2                             # See which protocol
 DXL1_ID                     = 1                             # Dynamixel ID: 1
 DXL2_ID                     = 2                             # Dynamixel ID: 2
 BAUDRATE                    = 57600
-DEVICENAME                  = "/dev/ttyUSB0".encode('utf-8')# Check which port is being used on your controller
+DEVICENAME                  = '/dev/tty.usbserial-FT2H2Z5A'.encode('utf-8')# Check which port is being used on your controller
+
                                                             # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 
 TORQUE_ENABLE               = 1                             # Value for enabling the torque
 TORQUE_DISABLE              = 0                             # Value for disabling the torque
-DXL_MINIMUM_POSITION_VALUE  = -150000                       # Dynamixel will rotate between this value
-DXL_MAXIMUM_POSITION_VALUE  = 150000                        # and this value (note that the Dynamixel would not move when the position value is out of movable range. Check e-manual about the range of the Dynamixel you use.)
+DXL_MINIMUM_POSITION_VALUE  = 0                       # Dynamixel will rotate between this value
+DXL_MAXIMUM_POSITION_VALUE  = 2000                       # and this value (note that the Dynamixel would not move when the position value is out of movable range. Check e-manual about the range of the Dynamixel you use.)
 DXL_MOVING_STATUS_THRESHOLD = 20                            # Dynamixel moving status threshold
 
 ESC_ASCII_VALUE             = 0x1b

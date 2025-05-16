@@ -168,7 +168,7 @@ classdef DXLCommunication
             success = true;
         end
 
-        % initPort - Initializes the port and sets the baudRate
+        % openPort - Initializes the port and sets the baudRate
         function success = openPort(obj)
             % Inputs:
             %
@@ -202,6 +202,8 @@ classdef DXLCommunication
             if libisloaded(obj.libName)
                 % Close port
                 closePort(obj.portNum);
+                fprintf('Port Closed!\n');
+
             end
 
 

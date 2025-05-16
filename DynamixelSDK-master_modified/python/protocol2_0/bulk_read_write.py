@@ -61,15 +61,16 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
-os.sys.path.append('../dynamixel_functions_py')             # Path setting
+os.sys.path.append('DynamixelSDK-master_modified/python/dynamixel_functions_py')             # Path setting
 
 import dynamixel_functions as dynamixel                     # Uses Dynamixel SDK library
 
 # Control table address
-ADDR_PRO_TORQUE_ENABLE      = 562                           # Control table address is different in Dynamixel model
-ADDR_PRO_LED_RED            = 563
-ADDR_PRO_GOAL_POSITION      = 596
-ADDR_PRO_PRESENT_POSITION   = 611
+ADDR_PRO_TORQUE_ENABLE       = 64                          # Control table address is different in Dynamixel model
+ADDR_PRO_GOAL_POSITION       = 116
+ADDR_PRO_PRESENT_POSITION    = 132
+ADDR_PRO_OPERATING_MODE      = 11
+ADDR_PRO_LED_RED             = 65
 
 # Data Byte Length
 LEN_PRO_LED_RED             = 1
@@ -83,7 +84,7 @@ PROTOCOL_VERSION            = 2                             # See which protocol
 DXL1_ID                     = 1                             # Dynamixel ID: 1
 DXL2_ID                     = 2                             # Dynamixel ID: 2
 BAUDRATE                    = 57600
-DEVICENAME                  = "/dev/ttyUSB0".encode('utf-8')# Check which port is being used on your controller
+DEVICENAME                  = '/dev/tty.usbserial-FT2H2Z5A'.encode('utf-8')# Check which port is being used on your controller
                                                             # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 
 TORQUE_ENABLE               = 1                             # Value for enabling the torque
