@@ -3,9 +3,9 @@ function keyboardListener()
     global dxlMotorPack
     global motorPos_extended
     global motorPos_flexed
+    global motorPos_delta
     
-    motorPos_extended = [4000 6000 -1500 0 1800];
-    motorPos_flexed = [-3000 -1000 -8000 -7000 -3500];
+    motorPos_delta = [-7000 -7000 -6500 -6000 -5000];
     
     load('MX106ControlTable_Container.mat', 'MX106ControlTable_ContainerMap');
     
@@ -17,7 +17,7 @@ function keyboardListener()
     dxlMotorPack.setTargetLEDStates(zeros(1,5));
     pause(2)
 
-    dxlMotorPack.setOtherCommandValues("Current Limit",1*ones(1,5));
+    % dxlMotorPack.setOtherCommandValues("Current Limit",1*ones(1,5));
     % dxlMotorPack.setOtherCommandValues("Velocity Limit",1*ones(1,5));
     % dxlMotorPack.setOtherCommandValues("Profile Acceleration",20*ones(1,5));
     % dxlMotorPack.setOtherCommandValues("Profile Velocity",20*ones(1,5));
@@ -25,13 +25,11 @@ function keyboardListener()
     % dxlMotorPack.setTargetMotorControllerlModes(5)
     % dxlMotorPack.setOtherCommandValues("Min Position Limit",[-3000 -1000 -8399 -7451 -3771]);
     % dxlMotorPack.setOtherCommandValues("Max Position Limit",[4055 6000 -1399 -519 1880]);
-    dxlMotorPack.enableTorque(1)
-    pause(2)
-    dxlMotorPack.setTargetPositions(motorPos_extended)
-    pause(2)
+    dxlMotorPack.enableTorque(0)
+    pause(0.2)
     % Display instructions
     fprintf('Keyboard Listener Started\n');
-    fprintf('Press i, m, r, l, or t to see a message\n');
+    fprintf('Press c, g, p, i, m, r, l, or t to see a message\n');
     fprintf('Press q to quit\n\n');
     
     % Create a figure to capture key pressesi
@@ -78,6 +76,7 @@ function keyPressed(src, event)
     global isRunning;
     global motorPos_extended
     global motorPos_flexed
+    global motorPos_delta
 
     
     % Get the key that was pressed
@@ -93,6 +92,10 @@ function keyPressed(src, event)
     
     % Messages for different keys
     messages = struct();
+    messages.c = 'Index finger motor unit detected. Activating motor 1';
+    messages.g = 'DoF 1 motor unit detected. Activating grasping -all motors';
+    messages.p = 'DoF 2 motor unit detected. Activating pinching - motors 1 and 2';
+    
     messages.i = 'Index finger motor unit detected. Activating motor 1';
     messages.m = 'Middle finger motor unit detected. Activating motor 2';
     messages.r = 'Ring finger motor unit detected. Activating motor 3';
@@ -102,12 +105,57 @@ function keyPressed(src, event)
     
     % Check which key was pressed and display appropriate message
     switch key
+        case 'c'
+            message = messages.(key);
+            set(messageText, 'String', message);
+            fprintf('Calibrating extension positions %s: %s\n', key, message);
+            dxlMotorPack.setTargetLEDStates([1 1 1 1 1]);
+            pause(0.1)
+            motorPos_extended = dxlMotorPack.getPresentPositions
+            pause(1)
+            motorPos_flexed = motorPos_extended + motorPos_delta
+            dxlMotorPack.setTargetLEDStates([0 0 0 0 0]);
+            pause(0.1)
+
+        case 'g'
+            message = messages.(key);
+            set(messageText, 'String', message);
+            fprintf('Finger detected %s: %s\n', key, message);
+            dxlMotorPack.setTargetLEDStates([1 1 1 1 1]);
+            pause(0.1)
+            dxlMotorPack.setTargetPositions(motorPos_flexed)
+            pause(0.5)
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("Grasp movmement complete")
+
+        case 'p'
+            message = messages.(key);
+            set(messageText, 'String', message);
+            fprintf('Finger detected %s: %s\n', key, message);
+            dxlMotorPack.setTargetLEDStates([1 1 0 0 0]);
+            pause(0.1)
+            targetPos = [motorPos_flexed(1) motorPos_flexed(2) ...
+                motorPos_extended(3) motorPos_extended(4) motorPos_extended(5)];
+            dxlMotorPack.setTargetPositions(targetPos);
+            pause(0.5)
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("Pinch movmement complete")
+
+
         case 't'
             message = messages.(key);
             set(messageText, 'String', message);
             fprintf('Finger detected %s: %s\n', key, message);
             dxlMotorPack.setTargetLEDStates([1 0 0 0 0]);
             dxlMotorPack.itemWrite(0,"Goal Position",motorPos_flexed(1))
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("Thumb movmement complete")
 
 
         case 'i'
@@ -116,6 +164,10 @@ function keyPressed(src, event)
             fprintf('Finger detected %s: %s\n', key, message);
             dxlMotorPack.setTargetLEDStates([0 1 0 0 0]);
             dxlMotorPack.itemWrite(1,"Goal Position",motorPos_flexed(2))
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("Index finger movmement complete")
 
 
         case 'm'
@@ -124,6 +176,10 @@ function keyPressed(src, event)
             fprintf('Finger detected %s: %s\n', key, message);
             dxlMotorPack.setTargetLEDStates([0 0 1 0 0]);
             dxlMotorPack.itemWrite(2,"Goal Position",motorPos_flexed(3))
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("Middle finger movmement complete")
 
 
         case 'r'
@@ -132,6 +188,10 @@ function keyPressed(src, event)
             fprintf('Finger detected %s: %s\n', key, message);
             dxlMotorPack.setTargetLEDStates([0 0 0 1 0]);
             dxlMotorPack.itemWrite(3,"Goal Position",motorPos_flexed(4))
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("Ring finger movmement complete")
 
 
 
@@ -141,6 +201,10 @@ function keyPressed(src, event)
             fprintf('Finger detected %s: %s\n', key, message);
             dxlMotorPack.setTargetLEDStates([0 0 0 0 1]);
             dxlMotorPack.itemWrite(4,"Goal Position",motorPos_flexed(5))
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("Little finger movmement complete")
 
 
         case 'q'
@@ -156,6 +220,10 @@ function keyPressed(src, event)
             fprintf('Open all fingers. Unwinding motors ...\n')
             dxlMotorPack.setTargetLEDStates([0 0 0 0 0]);
             dxlMotorPack.setTargetPositions(motorPos_extended)
+            while(dxlMotorPack.areMotorsMoving)
+                fprintf("Motors are Moving")
+            end
+            fprintf("All fingers extended")
 
         otherwise
             set(messageText, 'String', 'Unrecognized key');

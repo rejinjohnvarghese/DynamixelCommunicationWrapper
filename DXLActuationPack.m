@@ -109,7 +109,6 @@ classdef DXLActuationPack < DXLCommunication
             groupSyncWrite(obj,obj.DXLIDArray,command,targetData);
         end
 
-
         function setTargetMotorControllerlModes(obj,targetControllerMode)
             targetControllerModeArray = obj.ctrlModeArray(targetControllerMode)*ones(1,length(obj.DXLIDArray));
             groupSyncWrite(obj,obj.DXLIDArray,"Operating Mode",targetControllerModeArray);
@@ -126,6 +125,16 @@ classdef DXLActuationPack < DXLCommunication
                 obj.torqueEnabledState = false;
             end
             groupSyncWrite(obj,obj.DXLIDArray,"Torque Enable",torqueStatusArray);
+        end
+
+        function flag = areMotorsMoving(obj)
+            tempData = groupSyncRead(obj,obj.DXLIDArray,"Moving");
+            pause(0.1)
+            if sum(tempData) > 0
+                flag = true;
+            else
+                flag = false;
+            end
         end
 
     end

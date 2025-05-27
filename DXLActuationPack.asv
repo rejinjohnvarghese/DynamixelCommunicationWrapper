@@ -72,7 +72,7 @@ classdef DXLActuationPack < DXLCommunication
             data = groupSyncRead(obj,obj.DXLIDArray,command);
             fprintf("Register Command: %s, \n",command)
             for i = 1:length(data)
-                fprintf("Motor ID: %i, Command Value: %i \n")
+                fprintf("Motor ID: %i, %s Value: %i \n",obj.DXLIDArray(i),command,data(i))
             end
         end
 
@@ -105,6 +105,10 @@ classdef DXLActuationPack < DXLCommunication
             groupSyncWrite(obj,obj.DXLIDArray,"LED",targetLEDStateArray);
         end
 
+        function setOtherCommandValues(obj,command,targetData)
+            groupSyncWrite(obj,obj.DXLIDArray,command,targetData);
+        end
+
         function setTargetMotorControllerlModes(obj,targetControllerMode)
             targetControllerModeArray = obj.ctrlModeArray(targetControllerMode)*ones(1,length(obj.DXLIDArray));
             groupSyncWrite(obj,obj.DXLIDArray,"Operating Mode",targetControllerModeArray);
@@ -121,6 +125,13 @@ classdef DXLActuationPack < DXLCommunication
                 obj.torqueEnabledState = false;
             end
             groupSyncWrite(obj,obj.DXLIDArray,"Torque Enable",torqueStatusArray);
+        end
+
+        function data = getMotorStatus(obj)
+            tempData = groupSyncRead(obj,obj.DXLIDArray,"Moving");
+            pause(0.2)
+            flag = 
+            obj.presentPWMs = data;
         end
 
     end
