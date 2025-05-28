@@ -19,6 +19,10 @@ classdef DXLActuationPack < DXLCommunication
         presentControllerStates
         presentLEDStates
 
+        velocityLimits
+        accelerationLimits
+        currentLimits
+
     end
 
     properties (Constant)
@@ -33,11 +37,15 @@ classdef DXLActuationPack < DXLCommunication
     % Public methods
     methods (Access = public)
         % Constructor method
-        function obj = DXLActuationPack(ctrlTableMap,portName,baudRate,dxlIDs)
+        function obj = DXLActuationPack(ctrlTableMap,portName,baudRate,dxlIDs,velocityLimit,accelerationLimit,currentLimit)
             obj@DXLCommunication(ctrlTableMap,portName,baudRate);
             obj.DXLIDArray = dxlIDs;
             obj.torqueEnabledState = false;
+            obj.velocityLimits = velocityLimit;
+            obj.accelerationLimits = accelerationLimit;
         end
+
+        function
 
         function state = isTorqueEnabled(obj)
             state = obj.torqueEnabledState;
@@ -127,11 +135,14 @@ classdef DXLActuationPack < DXLCommunication
             groupSyncWrite(obj,obj.DXLIDArray,"Torque Enable",torqueStatusArray);
         end
 
-        function data = getMotorStatus(obj)
+        function flag = areMotorsMoving(obj)
             tempData = groupSyncRead(obj,obj.DXLIDArray,"Moving");
-            pause(0.2)
-            flag = 
-            obj.presentPWMs = data;
+            pause(0.1)
+            if sum(tempData) > 0
+                flag = true;
+            else
+                flag = false;
+            end
         end
 
     end

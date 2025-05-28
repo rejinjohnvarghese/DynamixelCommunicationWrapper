@@ -19,6 +19,10 @@ classdef DXLActuationPack < DXLCommunication
         presentControllerStates
         presentLEDStates
 
+        velocityLimits
+        accelerationLimits
+        currentLimits
+
     end
 
     properties (Constant)
@@ -37,6 +41,7 @@ classdef DXLActuationPack < DXLCommunication
             obj@DXLCommunication(ctrlTableMap,portName,baudRate);
             obj.DXLIDArray = dxlIDs;
             obj.torqueEnabledState = false;
+
         end
 
         function state = isTorqueEnabled(obj)
@@ -114,6 +119,15 @@ classdef DXLActuationPack < DXLCommunication
             groupSyncWrite(obj,obj.DXLIDArray,"Operating Mode",targetControllerModeArray);
         end
 
+        function applyLimits(obj,velocityLimit,accelerationLimit,currentLimit)
+            obj.velocityLimits = velocityLimit;
+            obj.accelerationLimits = accelerationLimit;
+            obj.currentLimits = currentLimit;
+            groupSyncWrite(obj,obj.DXLIDArray,"Velocity Limit",velocityLimit);
+            groupSyncWrite(obj,obj.DXLIDArray,"Acceleration Limit",accelerationLimit);
+            groupSyncWrite(obj,obj.DXLIDArray,"Current Limit",currentLimit);
+        end
+
         function enableTorque(obj,torqueStatus)
             if torqueStatus == 1
                 torqueStatusArray = ones(1,length(obj.DXLIDArray));
@@ -128,7 +142,11 @@ classdef DXLActuationPack < DXLCommunication
         end
 
         function flag = areMotorsMoving(obj)
-            tempData = groupSyncRead(obj,obj.DXLIDArray,"Moving");
+            disp("Temp Data")
+            tempData = groupSyncRead(obj,obj.DXLIDArray,"Moving")
+            disp("Sum of Temp Data")
+            sumTempData = sum(tempData)
+            
             pause(0.1)
             if sum(tempData) > 0
                 flag = true;
